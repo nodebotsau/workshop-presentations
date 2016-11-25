@@ -1,49 +1,88 @@
-# BuzzConf 2015: <br/>NodeBots Workshop
+# Internet of Tents Workshop
 <!-- .slide: class="title" -->
 
-November, 14 2015 <!-- .element: class="location" -->
+BuzzConf: November, 26 2016 <!-- .element: class="location" -->
 
 Andrew Fisher @ajfisher<!-- .element: class="author" -->
 
 Notes:
 
 Hi, my name is Andrew Fisher and I'm an interaction developer and I also build
-hardware using JavaScript. Our workshop today is going to be very hands on
-around building NodeBots - using hardware with JavaScript.
+hardware using JavaScript and other web related technologies.
 
-I'm really pleased to be here and running this session at BuzzConf. Today you'll
-all leave here having built a robot and got it doing some stuff. We only have
-2 hours in this session but your robots are to take with you and you can keep
-hacking afterwards.
+Our session this afternoon is for 2 hours though we can continue to build after
+for those that want to keep going.
 
+---
 
+### Building the Internet of Tents
+<!-- .slide: data-background="/images/internet_tents.jpg" -->
 
+(CC) Flickr <!-- .element: class="attribution" -->
+[JoJo Tyhurst](https://www.flickr.com/photos/59960371@N06/7461131356/)
+
+Notes:
+
+Okay so this workshop is going to be very hands on after a quick intro to the
+various parts of the tech you'll be using. After that, you'll be building a physical,
+Internet connected thing - using hardware and javascript.
+
+We have plenty of gear you can use here, likewise you're welcome to sign out
+equipment to borrow until tomorrow and we do have some kit you can purchase as
+well (and yes, we do take cards).
 
 ---
 
 ## workshop repository
 
-ajf.io/nodebotsbuzzconf<!-- .element class="bigtext" -->
+github.com/nodebotsau/internetoftents<!-- .element class="bigtext" -->
 
 ---
 
 ## Agenda
 
-1. Introduction to JS hardware stack
-2. Hello World
-3. The mbot
-4. Hacking
-5. More hacking?
+1. The IoT stack
+2. Hello, Internet
+3. Building a Thing
 
 Notes:
 
-Today I've split things up a little so you get a basic idea of how the JS
-hwardware stack works. We'll finish that with simply blinking an LED. After that
-you'll then get into building your mbots and starting to program them,.
+Today I've split things up a little in order to get you a basic idea of how
+the hardware stack works. From there I'll give you a demo and show you some
+code of how to build a simple Thing. After that we'll get into building your
+own devices for the rest of the session.
 
 ---
 
-### Microcontrollers
+## Building Things
+
+* Electronics / Board
+* Network
+* Power
+* Security
+* Connectivity
+
+Notes:
+
+When working with Internet enabled physical things theres a few aspects we need
+to consider which I've broadly outlined here.
+
+What are the electronics you're using? Is it an arduino or a Raspberry Pi or
+some other board?
+
+How are you connected to the
+network and how are you maintaining that connection?
+
+As we're talking about electronics, how are you getting power?
+
+What type of security do you need and finally what are you connecting to?
+
+Let's quickly cover each of these and talk about them in the context of what
+we're doing here at BuzzConf.
+
+---
+
+### Electronics
 <!-- .slide: data-background="/images/arduino_nano.jpg" -->
 
 (CC) <!-- .element: class="attribution" -->
@@ -51,272 +90,383 @@ you'll then get into building your mbots and starting to program them,.
 
 Notes:
 
-So we typically when programming something in the real world, we use a microcontroller.
-A microcontroller is like a really old computer
-which you program in C and you can interact very directly with the circuit
-you wire up to it. The microcontroller we'll use today is a type of arduino
-made by MakeBlock and the board is called an mcore. But as far as we're concerned
-it's really an Arduino uno with a bunch of things added onto it.
+When we're building things to go in the real world we're typically using a
+microcontroller. However these tend to be fairly low spec - they aren't like
+a real PC with loads of RAM and a full OS.
+
+Usually you're programming them in C in order to do very low level activities
+such as turning pins on and off based on some criteria or external input.
+
+Some boards have radio chips in them like some of the ones we'll be using
+today but others, like this arduino don't, so you'll need to add a method for it
+to talk to the outside world. Which brings me to the Network.
 
 ---
 
-### Sensors and actuators
-
-* LED
-* Motors (x2)
-* Ultrasonic sensor
-* Reflectance sensor
-* NeoPixels (x2)
-* Light sensor
-* Piezo speaker
-
-
-Notes:
-
-Now a microcontroller is just a tiny little computer, you need to plug things
-into it to do meaningful stuff. Luckily on the mcore there are a bunch of things
-already on it, like LEDs, neopixels, light sensors and you can plug other things
-in as well like ultrasonic sensors and motors. Lots of fun,
-
----
-
-### JS ❤ Robotics
-<!-- .slide: data-background="/images/robot_love.jpg" -->
+### Network
+<!-- .slide: data-background="/images/networking.jpg" -->
 
 (CC) Flickr <!-- .element: class="attribution" -->
-[hiperbolica](https://www.flickr.com/photos/hiperbolica/3414999010)
+[Norlando Pobre](https://www.flickr.com/photos/npobre/8437956869/)
 
 Notes:
 
-Okay so we're all software peeps so that's enough hardware to get you going. So
-how do we get JS working with this microcontroller that I said a moment ago
-can only use C.
+An Internet Thing won't do much if it's not connected to some kind of network.
+Most often people think of WiFi and that's mostly what we'll be using. This is
+because it's relatively ubiquitous and the chips have got really inexpensive
+because they are widely used. But you can also use Bluetooth and connect out
+via a phone. You can use GSM directly as well as other methods such as 6lowpan
+which allows for meshing networks or LoRa which allows low speed but long range
+communications. Likewise, you can use plain old Wired ethernet.
+
+Obviously, standard network protocols are your friend and at least start with
+something simple enough to get going.
+
+But the next thing you have to contend with is power.
 
 ---
 
-## The NodeBots stack
+### Power
+<!-- .slide: data-background="/images/power.jpg" -->
 
-![](/images/logo.png)
+(CC) Flickr <!-- .element: class="attribution" -->
+[Jim Sher](https://www.flickr.com/photos/blyzz/3246221449/)
 
 Notes:
 
-There are a few different projects that can use JavaScript on hardware now,
-however the one we're going to talk about is called nodebots as it's very much
-aimed at a NodeJS implementation with hardware. At the core of nodebots are
-transport layers to deal with things like talking over USB or wireless or serial
-connections and then wrapped around that is a framework called Johnny Five.
+WiFi is awesome, but gosh it's power hungry. High bandwidth protocols get their
+bandwidth by broadcasting at high frequencies using a lot of energy. WiFi also
+is a relatively reliable protocol and because of that there's a lot of chatter
+back and forth between the router and the station in order to create that
+reliability and manage the connection.
+
+If you haven't got mains power though and have to use a battery then a power
+hungry protocol isn't that awesome. You can mitigate for this by sleeping the
+radio and what not but power will be a constant concern especially if you're
+using batteries.
+
+So in terms of power, as I mentioned we can use mains, we can use batteries
+and we can also look at ways such as solar to charge up our batteries. Our
+nodes here use a mix of these approaches depending on what they are doing.
 
 ---
 
-## Johnny Five
-<!-- .slide: data-background="/images/rick.jpg" -->
+### Security
+<!-- .slide: data-background="/images/security.jpg" -->
 
-(C)<!-- .element: class="attribution" -->
-[Joanne Daudier](https://twitter.com/jdaudier)
+(CC) Flickr <!-- .element: class="attribution" -->
+[Hery Zo Rakotondramanana](https://www.flickr.com/photos/saveoursmile/5433411025/)
 
 Notes:
 
-Johnny Five was started by this guy, Rick Waldron and there's now many core
-contibutors around the world.
+Okay so just google IoT hacks and you'll see that to date the various vendors
+haven't perhaps done the best job of securing their devices. The recent botnet
+of IP security cameras doing a DDoS on internet infrastructure wasn't the
+finest moment in recent memory.
+
+Obviously everything should start from an assessment of risk and potential
+vectors of attack. We could do a whole workshop on this but to discuss what
+we're doing for a moment.
+
+No nodes or infrastructure is directly accessible from the Internet. Whilst
+someone on the LAN here can see everything in terms of data, none of it is
+sufficiently risky that were it made public it would be a problem. Further
+we could easily restrict access using authentication and we could make sure
+all traffic is over TLS however that will make it harder for all of you. So
+that's an obvious improvement that could be made quickly and something you would
+do by default in a non-transient environment.
+
+Finally, our nodes only do one thing. So even were they to be compromised in
+some fashion they don't allow access to change them so they can't be coerced
+into another role such as conducting DOS attacks etc.
+
+Anyway, it's a consideration and if you ever work on this stuff go and employ
+a security researcher to come and hack and audit your systems as they are
+more than worth the expense.
 
 ---
 
-### The stack
+### Connectivity
+<!-- .slide: data-background="/images/connectivity.png" -->
 
-* Controller board (sensors and actuators)
-* IO Plugin (communications protocol)
-* Johnny Five / NodeJS (application logic)
-* WS/HTTP (networking and security protocols)
-* Clients (UI, input, visualisation)
+(CC) Flickr <!-- .element: class="attribution" -->
+[Simon Cockell](https://www.flickr.com/photos/sjcockell/4684828794/)
 
 Notes:
 
-So this is what the typical JS hardware stack looks like.
+And finally our last consideration is connectivity. How is this different than
+the network - well for me this makes the distinction between HOW you communicate
+which is the network's job and the WHAT and WHY you're actually doing with your service
+which is the connectivity side of things.
 
-We have a board which could have sensors and actuators. Actuators is just a
-fancy word for something that does something in the real world - like a motor
-or an LED etc. Most controller boards can't run JS yet so we normally need to
-put some firmware on them to do what we want.
+Agains there's options. A lot of people opt for things like HTTP and rest because
+it's relatively simple and well known. It does mean your Thing needs to either
+provide or understand the HTTP stack though which isn't small.
 
-This talks via a communications protocol to what is called an IO Plugin. IO
-plugins are a Johnny Five idea that tries to get hardware to behave in consistent
-ways via a protocol. Think of this sort of like HTTP requests and responses - the
-client doesn't really care what the server does as long as it responds properly.
+You can also opt for just sending data over TCP / UDP which whilst inelegant is
+very practical if you have a very constrained set of data.
 
-Johnny Five gives us hardware abstraction so we can turn motors and LEDs into
-JavaScript objects and interact with them. As a side effect we get all of NodeJS
-as well so that means we can start doing interesting things like linking up
-with our normal web protocols. And then finally we can add clients for things
-like UI, input and what not.
+However, one of the things that is interesting about IoT is that it's a very
+distributed system so having things tightly coupled and always connected between
+endpoints and a server doesn't create much resilience. You might have heard
+about the pet feeder earlier this year that stopped working over a weekend
+because the vendor's server went down.
 
----
-
-### Common implementation
-
-* Controller board (Arduino)
-* IO Plugin (Firmata over USB)
-* Johnny Five / NodeJS (application logic)
-* WS/HTTP (networking and security protocols)
-* Clients (UI, input, visualisation)
-
-Notes:
-
-So in practice this is what a specific implementation of this stack looks like.
-You can see we've got an arduino board in this case and the IO Plugin is
-a firmware called Firmata which provides us the interface to the board for Johnny
-Five. This is about the most basic and most common stack you can use but you can
-see that the bit we are concerned about - being the bit in the middle pretty
-much stays the same all the time.
+So the protocol we'll be using is called MQTT and I'll give you a bit more
+detail about that next. The reason we use this is because it's well suited to
+transient nodes and a distriubuted system that can have actions at
+levels both locally and remote.
 
 ---
 
-## NodeBots hardware
-
-* Servos, Motors, ESCs, Stepper motors
-* Accelerometers, Gyroscopes, Compasses, IMUs
-* Temperature, Proxitimity, Pressure sensors
-* LEDs, NeoPixels, Pixel matrices
-* Switches, Joysticks, Buttons
-* LCDs
-
-Notes:
-
-In terms of hardware - there is a lot covered in Johnny Five and more core
-components are still being added. The intent is to have the majority of the
-most common electronics components you're likely to come across available in
-the framework and then you can use then to compose bigger objects that then
-represent your thing that you're making.
-
----
-
-### Installation
-
-* Flash board with protocol (eg Firmata)
-* npm install johnny-five
-* Write code
-* ...
-* Make an awesome JS Hardware thing
-
-Notes:
-
-So to get up and running, it's pretty much just a case of getting the board dev
-environment going. For arduino that's prerry much just download the arduino
-IDE and install it. You then put the IO protocol on the board that you need -
-for an arduinon that just means using Firmata and then it's an npm install
-and you are then writing code.
-
-
----
-
-## Getting started:
-
-ajf.io/nodebotsbuzzconf<!-- .element class="bigtext" -->
-
-Notes:
-
-If you haven't already, please make sure you have downloaded or cloned this
-repo as we're about to get cracking in it for the rest of the session.
-
----
-
-### Ex 1: Hello World
+## Hello, Internet
 <!-- .slide: data-background="/images/hello_world.jpg" -->
 
-(CC) Flickr <!-- .element: class="attribution" -->
-[Daniel Novta](http://www.flickr.com/photos/vanf/5210360116)
+(CC) <!-- .element: class="attribution" -->
+[Arduino](https://arduino.cc)
 
 Notes:
 
-Okay so enough theory, it's time to get stuck in. The first exercise we are
-going to do is to just make sure you understand the stack and have it all working.
+Now you've had a crash course on the things we need to think about before we
+make a Thing, let's go and build one.
 
-Hardware often doesn't have a screen so hello world is blinking an LED.
-
-Pull out your mcore board and connect it up.
+Our thing in this case is going to be really simple - it's the classic
+electronics Hello World example of an LED light, however in our case we're
+going to make it accessible to the network so you can control it remotely.
 
 ---
 
-### EX 1: Install mbot firmata
+### Messaging and MQTT
 
-interchange install \<br/>
-git+https://github.com/Makeblock-official/mbot_nodebots \<br/>
--a uno -p 'port' --firmata=usb
+* Message queue
+* Self contained payloads
+* May take any data including binary
 
 Notes:
 
-We're going to use a very new technique to install things called interchange.
-Interchange helps install different firmatas and firmwares for you on various
-devices. If you want to find out more, check out nodebots interchange on npm.
+Okay so let's quickly talk about MQTT as this will be the basis on which
+we're doing everything. MQTT is a message queue that was designed for telemetry
+transport - which sounds suspiciously like what we're doing.
 
-So you'll need to make sure you installed your driver, the directions for which
-are in the gist I linked you to before. After that run this instruction and
-you should get everything download and flash to the board. This instruction
-is in the gist readme as well so you can copy and paste it from there. 
+It uses messages that are wholly contained payloads of information. If you've
+used message queues before this won't be new at all. The idea is to encapsulate
+all the information you need in the payload of a message and then let other
+services act upon it if it's of interest.
 
 ---
 
-### Ex 1: JS Code
+### PubSub
 
 ```
-var five = require("johnny-five");
-
-var board = new five.Board();
-
-board.on("ready", function() {
-
-    var led = five.Led({pin:13});
-
-    led.blink(1000);
-
-});
+ESP_e523cd/temp/c
+ESP_e523cd/temp/k
+ESP_e523cd/pressure/pa
+ESP_e523cd/#
+#/temp/c
 ```
 
 Notes:
 
-Now we have that, we need to talk to it from Johnny Five. You can see the code
-in the repo. Explain code here.
+How do we know it's of interest, well that's where Publication and Subscription
+come in.
+
+MQTT has the notion of Topics. You can think of a topic as being like a chat room
+and it has an address. This first line is a topic that has been set up for the
+node ESP_e5 blah temperature celcius topic. This is like a directory
+path so you can have containing collections such as here you can see we have
+temp and it has sub topics for both celcius and kelvin in this case.
+
+So the node can publish to the Broker on a topic and they are all flexible so you can
+have pretty much whatever you want so long as it's a usable string. I haven't
+tested emoji but you could give it a go I guess.
+
+Now on the other side, nodes or other actors can subscribe to a topic or in fact
+a set of topics. So if I'm interested in the celcius temperature of this particular
+node I can subscribe to receive messages from it whenever one is published.
+
+But say I wanted to look at all messages off this node. It might be a weather
+station so it's got more data than just temperature. Here I can use a wildcard
+which is the hash character. In this case whenever a message that is below the
+level of the ESP... gets published, I will receive it as part of my subscription.
+
+Likewise I could use these wildcards to get all temperature values regardless of
+the node so I could do things like aggregation or what not.
+
+So pub sub is very flexibile in this regard. If you've used websockets before
+this will look fairly familiar.
 
 ---
 
-### Ex 1: Run
+### Storage
+
+* Store what is of importance
+* InfluxDB good for time series data
+* Redis, Mongo for KV
+* Relational for traditional storage
+* MQTT can retain last message to a topic
+
+Notes:
+
+By default MQTT brokers don't usually store the messages, they simply take them
+pass them onto the subscribed actors and then remove them from the queue. It's
+possible to store them in a range of systems such as Influx DB if you want
+time series data but you can also use Redis, Mongo or even just a basic relational
+database. Obviously the more data you are generating these can fill up pretty
+fast.
+
+One exception to this is using the retain flag on your message. If you publish
+a message with the retain flag set, it tells the MQTT server to hold onto a
+copy of this message until it's replaced or nulled out. This has the benefit
+that for transient nodes that are popping on and off the network they can be
+sent the last value of a topic if they are subscribed to it. We use this
+feature heavily for our nodes here where we tell them how long to sleep for
+and what mode they should be in.
+
+Now we know the basics of MQTT, let's make our system. If you have the repo
+prereqs installed and an arduino nearby you can follow along.
+
+---
+
+### Prototype 1 - Arduino + Laptop
+
+* Node Red to do the hard work
+* Arduino runs Firmata protocol (same as NodeBots)
+* Connection over USB Serial
+
+
+Notes:
+
+Our first prototype is going to be pretty simple. It's our LED here connected
+to a standard Arduino and we'll have that connected to my laptop. In this
+case my laptop is providing the connectivity and network access to the arduino
+which I'm using over USB.
+
+To make this a quick prototype I'm going to use NodeRed which allows me to
+use a browser and some flow based programming to join some parts together.
+
+So here I have my local node-red server running and I can add a UI element
+which turns on and off.
+
+Great so I've proven I can make a simple LED turn on and off with some UI
+that's a good first step.
+
+---
+
+### Prototype 2 - Wireless node
+
+- node subscribed to `lights/state` topic
+- publish message `on` or `off` to topic
+- wire to UI or other input
+
+Notes:
+
+Our second prototype will take this further. Now, instead of the arduino
+connected over serial, we'll use this ESP8266 wireless microcontroller.
+
+This has an LED on it and is subscribed to the lights/state topic. All I need
+to do is send it a message of on or off and the lights should turn on or
+off.
+
+So let's try that. Yay it works now we could hook this up to just about anything.
+
+---
+
+### Prototype 3 - JS version
 
 ```
-node led.js
+CODE
 ```
 
 Notes:
 
-Now run node and you should get a nice blinking LED.
+Let's do a version of this in JS. This time we'll write a little command
+line application which can send a message to MQTT to control the lights.
+
+Here you can see some simple code, I parse the option of my command line
+and then just publish a message on the appropriate topic after connecting to
+the MQTT server.
 
 ---
 
-## Time for droids?
-<!-- .slide: data-background="/images/droids.jpg" -->
+### Prototype 4 - Light activated version
 
-(CC) Flickr <!-- .element: class="attribution" -->
-[⣫⣤⣇⣤](http://www.flickr.com/photos/donsolo/3768623542/)
+* Sensor on `sensor/light`
+* Generates data every second
+* can use it in multiple ways
 
 Notes:
 
-Okay so you've made an LED blink. Now it's time to build your robot.
+Our final example is going to use Node Red again for speed. Basically in
+this scenario we're going to have a light sensor give us the ambient light
+reading. If it's bright we want to send a message to the MQTT server to turn
+the light off and if it's dark then we want it to turn on.
+
+So in a distributed fashion we can do a few things now. First we get the
+values of the light every second off it's topic. And as we have that we may as well send that
+to a graph so we can see the data.
+
+Then we can put a condition on it saying that if it's over a threshold then
+send an MQTT message to the light to go on otherwise turn off.
 
 ---
 
-## Going further
+## Make the Internet of Tents
+<!-- .slide: data-background="/images/tools.jpg" -->
 
-* Use HCSR04 ultrasonic sensor to detect distance
-* Light up your neopixels based on an input
-* measure the light at different points and record it
-* Go wireless if you're brave using the bluetooth
+(CC) Flickr<!-- .element: class="attribution" -->
+[Peter Hellberg](https://www.flickr.com/photos/peterhellberg/4572432746/)
+
+
+Notes:
+
+Okay so that's some very basic examples to get you familiar with working with
+Node Red and MQTT and doing it in JS as well. There is heaps you can do with
+this.
+
+So from here on you'll be creating your own modules or using the data sources
+available on the network to create other services.
+
+---
+
+## Available services
+
+* MQTT Server is at mqtt-server.local, IP ()
+* Please publish test stuff to `test/foo`
+* Temperature available on `#/temp/c`
+* Pressure on `#/pressure/pa`
+* Humidity on `#/humidity`
+* Slack #iotents channel to post your services and we'll pin them
+
+Notes:
+
+Here's some basic services that we've put together which you can use.
+
+---
+
+## Make your own
+
+* github.com/nodebotsau/internetoftents
+* preconfigured ESP Nodes available can do (Temp, Servo and NeoPixels)
+* Build your own firmware!
+
+Notes:
+
+The easiest way to get going is to use an arduino on your laptop and get started
+posting to MQTT using nodered
+
+Likewise we have nodes preconfigured to do things like move a servo, display
+NeoPixels or take temperature readings. So feel free to use them if you want.
+
+Otherwise, build your own firmware using Ardunino and we'll love to see what
+you make.
 
 ---
 
 ## Resources
 
-* johnny-five.io
-* gitter.im/rwaldron/johnny-five
-* ajf.io/nodebotsbuzzconf
-* github.com/Makeblock-official/mbot_nodebots
+* mqtt.org
+* github.com/nodebotsau/internetoftents
+* nodebotsau.io
 * hackmelbourne.org
 
 Notes:
@@ -325,10 +475,9 @@ So if you want to do more and look for more info, here's some places to do so.
 
 ---
 
-# BuzzConf 2015: <br/>NodeBots Workshop
+# Internet of Tents Workshop
 <!-- .slide: class="title" -->
 
-November, 14 2015 <!-- .element: class="location" -->
+BuzzConf: November, 26 2016 <!-- .element: class="location" -->
 
 Andrew Fisher @ajfisher<!-- .element: class="author" -->
-
