@@ -354,8 +354,8 @@ that's a good first step.
 
 ### Prototype 2 - Wireless node
 
-- node subscribed to `lights/state` topic
-- publish message `on` or `off` to topic
+- node subscribed to `ic/led` topic
+- publish message `on` or `off` (or `1` | `0`) to topic
 - wire to UI or other input
 
 Notes:
@@ -374,7 +374,24 @@ So let's try that. Yay it works now we could hook this up to just about anything
 ### Prototype 3 - JS version
 
 ```
-CODE
+var mqtt = require('mqtt');
+var client  = mqtt.connect('mqtt://192.168.150.11');
+
+client.on('connect', function () {
+    client.subscribe('ESP_f3b685/#');
+
+    if (process.argv[2] == "on") {
+        client.publish("ESP_f3b685/ic/led", "on");
+    } else if (process.argv[2] == "off") {
+        client.publish("ESP_f3b685/ic/led", "off");
+    }
+});
+
+client.on('message', function (topic, message) {
+  // message is Buffer
+  console.log(topic, message.toString());
+  client.end();
+});
 ```
 
 Notes:
@@ -390,7 +407,7 @@ the MQTT server.
 
 ### Prototype 4 - Light activated version
 
-* Sensor on `sensor/light`
+* Sensor analog input on Arduino
 * Generates data every second
 * can use it in multiple ways
 
