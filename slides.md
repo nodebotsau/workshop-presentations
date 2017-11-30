@@ -1,17 +1,19 @@
-# NodeBots Internet of Things Workshop
+# Rocket Surgery, Airborne IoT
 <!-- .slide: class="title" -->
 
-December, 10 2016 <!-- .element: class="location" -->
+December, 2 2017, BuzzConf 2017 <!-- .element: class="location" -->
 
-Andrew Fisher @ajfisher<!-- .element: class="author" -->
+Andy Gelme @geekscape, Nick Moore @nickzoic, Andrew Fisher @ajfisher<!-- .element: class="author" -->
 
 Notes:
 
-Hi, my name is Andrew Fisher and I'm an interaction developer and I also build
-hardware using JavaScript and other web related technologies.
+Hi, my name is Andrew Fisher and I'm joined today by Andy Gelme and Nick Moore.
+We are all developers of different types but one thing we all work on in or
+out of work is applications of roboitics, IoT and things like machine learning.
 
-Today I'm going to talk you and build with you some quick hardware using web
-tech that can work with the Internet and form the basis of building an Internet Thing.
+Today in our workshop we're going to be looking fundamentally at a set of IoT
+related technologies, but we'll be doing it through the medium of rockets because
+why not make this fun right?
 
 ---
 
@@ -23,53 +25,101 @@ tech that can work with the Internet and form the basis of building an Internet 
 
 Notes:
 
-This workshop is going to be very hands on so so you'll need the arduino you
-got in your kit as well as some of the components. If you haven't got them
-with you then maybe send someone from your team to go grab them as we get started.
+This workshop will be hands on building and launching rockets but we have
+designed this so you can go as deep as you like.
+The main aim is to show you how a bunch of IoT technologies
+can be pulled together quickly and cheaply to do a task - in this case, literally
+Rocket Science. But if you want to dig into this further then please chat to
+one of us during the session and we can walk you deeper into things.
 
 ---
 
-## workshop repository
+## Workshop repository
 
-github.com/nodebotsau/workshops<!-- .element class="bigtext" -->
+github.com/nodebotsau/water-rocket<!-- .element class="bigtext" -->
+
+Notes:
+
+Just to quickly point out, there's a bunch of code, tools and resources available
+in our project repo so if you want to go to this address then you can start
+downloading that. Note that you will need NodeJS to make the various applications
+work as well. 
 
 ---
 
 ## Agenda
 
-1. The IoT stack
-2. Hello, Internet
-3. Building a Thing
+1. Why rockets?
+2. The rocket stack
+3. Building rockets
 
 Notes:
 
-Today I've split things up a little in order to get you a basic idea of how
-the hardware stack works. From there I'll give you a demo and show you some
-code of how to build a simple Thing. After that we'll get into building your
-own devices for the rest of the session.
+Today we've split things up a bit so we'll very quickly orient you to what
+we're doing, how it goes together at a software level and then get stuck into
+building and flying these things !!!WEATHER NOTE!!!
+
+---
+
+## Why rockets?
+
+Notes:
+
+Why not fly some rockets? In all seriousness though, we were talking about this
+idea that IoT is really important for people to start to understand but at
+many layers it can get very impenetrable really quickly. Why we chose rockets
+specifically is, besides being fun, there's a multitude of challenges here that
+whilst applicable to flying a rocket and getting telemetry off it, are really no
+different than having some home automation, or building a connected product.
+
+Additionally, we wanted to show that it's possible, using very inexpensive
+and powerful components as well as open source protocols and software to do
+really interesting applications both quickly and cheaply. We're going to be
+doing literally rocket science for a cost of less than $30 in parts if you
+have access to a laptop and a phone.
+
+This has great potential for introducing you to IoT and have some fun while you do it.
 
 ---
 
 ## The IoT stack
 
-* Hardware
-* Firmware
-* Connectivity
-* Application
-
+ANDY - Maybe diagram??
 
 Notes:
 
-The IoT stack isn't ridiculously different from a normal web application stack
-really. The main complexity comes from the fact that you're dealing with physical
-things which may be in questionable physical conditions - eg a mobile network
-on the side of a mountain where reception is up and down.
+Run through the stack - 
 
-Here we won't have such problems but a lot of what we design for with IoT should
-take things like transient power and networks into consideration. You can see
-a lot of devices (cough fitbit) that don't work when there's no Internet connection.
+- MicroPython running on the microcontroller - worth explaining at a high level
+what problem mPY is solving (eg high level language on a microcontroller to
+prototype quickly and produce connectivity quickly
+- MQTT as comms channel - benefit being it can work over any TCP network
+- Ground station - mixed technology using python and node tools
+- Analysis application - using web tech, primarily nodeJs and JavaScript
 
-So quickly running through the stack:
+- Benefits being able to leverage right tools for the job to work quickly
+and prototype well.
+
+---
+
+## Building the rocket
+
+Diagram of parts
+
+Notes:
+
+This is how the bits go together. Show demo rocket and then show running
+environment broadcasting data to analysis application (and throw the rocket
+around).
+
+---
+
+## Resources:
+
+* github.com/nodebotsau/water-rocket
+* mqtt.org
+* micropython.org
+* nodejs.org
 
 ---
 
