@@ -88,10 +88,7 @@ This has great potential for introducing you to IoT and have some fun while you 
 
 ---
 
-## The IoT stack
-
-ANDY - Maybe diagram??
-
+![](images/rocket_software_stack.png)<!-- .element: style="width:55%" -->
 Notes:
 
 Run through the stack - 
