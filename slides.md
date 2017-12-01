@@ -89,6 +89,7 @@ This has great potential for introducing you to IoT and have some fun while you 
 ---
 
 ![](images/rocket_software_stack.png)<!-- .element: style="width:55%" -->
+
 Notes:
 
 Run through the stack - 
@@ -102,6 +103,14 @@ prototype quickly and produce connectivity quickly
 
 - Benefits being able to leverage right tools for the job to work quickly
 and prototype well.
+
+---
+
+![](images/rocket_code.png)<!-- .element: style="width:90%" -->
+
+Notes:
+
+Run through the actual code
 
 ---
 
